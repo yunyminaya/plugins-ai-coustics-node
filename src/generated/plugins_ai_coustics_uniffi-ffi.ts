@@ -326,6 +326,11 @@ const DEFINITIONS = {
       ret: FfiType.Int8,
       hasRustCallStatus: true,
     },
+    uniffi_plugins_ai_coustics_uniffi_fn_func_on_process_exit: {
+      args: [FfiType.UInt64],
+      ret: FfiType.Int8,
+      hasRustCallStatus: true,
+    },
     uniffi_plugins_ai_coustics_uniffi_fn_constructor_enhancer_new: {
       args: [FfiType.RustBuffer, FfiType.RustBuffer],
       ret: FfiType.Handle,
@@ -374,6 +379,11 @@ const DEFINITIONS = {
       hasRustCallStatus: false,
     },
     uniffi_plugins_ai_coustics_uniffi_checksum_func_model_parameters_equal: {
+      args: [],
+      ret: FfiType.UInt16,
+      hasRustCallStatus: false,
+    },
+    uniffi_plugins_ai_coustics_uniffi_checksum_func_on_process_exit: {
       args: [],
       ret: FfiType.UInt16,
       hasRustCallStatus: false,
@@ -594,6 +604,10 @@ interface NativeModuleInterface {
     b: Uint8Array,
     uniffi_out_err: UniffiRustCallStatus,
   ): number;
+  uniffi_plugins_ai_coustics_uniffi_fn_func_on_process_exit(
+    timeoutMs: bigint,
+    uniffi_out_err: UniffiRustCallStatus,
+  ): number;
   uniffi_plugins_ai_coustics_uniffi_fn_constructor_enhancer_new(
     auth: Uint8Array,
     settings: Uint8Array,
@@ -636,6 +650,7 @@ interface NativeModuleInterface {
   ): void;
   ffi_plugins_ai_coustics_uniffi_uniffi_contract_version(): number;
   uniffi_plugins_ai_coustics_uniffi_checksum_func_model_parameters_equal(): number;
+  uniffi_plugins_ai_coustics_uniffi_checksum_func_on_process_exit(): number;
   uniffi_plugins_ai_coustics_uniffi_checksum_constructor_enhancer_new(): number;
   uniffi_plugins_ai_coustics_uniffi_checksum_method_enhancer_process(): number;
   uniffi_plugins_ai_coustics_uniffi_checksum_method_enhancer_process_owned(): number;

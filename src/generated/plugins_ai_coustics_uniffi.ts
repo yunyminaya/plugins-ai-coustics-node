@@ -74,6 +74,24 @@ export function modelParametersEqual(
   );
 }
 
+/**
+ * Call when the process is about to exit, after the last enhancer is destroyed; calling it more
+ * than once is fine. Blocks for up to `timeout_ms` and returns whether it finished in time.
+ */
+export function onProcessExit(timeoutMs: bigint): boolean {
+  return FfiConverterBool.lift(
+    uniffiCaller.rustCall(
+      /*caller:*/ (callStatus) => {
+        return nativeModule().uniffi_plugins_ai_coustics_uniffi_fn_func_on_process_exit(
+          FfiConverterUInt64.lower(timeoutMs, nativeModule().rustbuffer_alloc),
+          callStatus,
+        );
+      },
+      /*liftString:*/ FfiConverterString.lift.bind(FfiConverterString),
+    ),
+  );
+}
+
 const stringConverter = (() => {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
@@ -1119,6 +1137,14 @@ function uniffiEnsureInitialized() {
   ) {
     throw new UniffiInternalError.ApiChecksumMismatch(
       "uniffi_plugins_ai_coustics_uniffi_checksum_func_model_parameters_equal",
+    );
+  }
+  if (
+    nativeModule().uniffi_plugins_ai_coustics_uniffi_checksum_func_on_process_exit() !==
+    56607
+  ) {
+    throw new UniffiInternalError.ApiChecksumMismatch(
+      "uniffi_plugins_ai_coustics_uniffi_checksum_func_on_process_exit",
     );
   }
   if (

@@ -7,6 +7,7 @@ import {
 
 import {
   Enhancer,
+  onProcessExit,
   modelParametersEqual,
   EnhancerModel,
   type StreamInfo,
@@ -17,6 +18,19 @@ import {
 } from "./generated";
 import { log } from "./logger";
 import { type AuthBase, Auth, toAuthMode } from "./auth";
+
+/** The longest {@link onProcessExit} may hold up the exit of the process. */
+const PROCESS_EXIT_TIMEOUT_MS = 5000n;
+
+// The @livekit/agents job process exits with process.exit() right after its job, which runs "exit"
+// listeners synchronously, so blocking here holds the exit without stalling anything else.
+process.once("exit", () => {
+  try {
+    onProcessExit(PROCESS_EXIT_TIMEOUT_MS);
+  } catch (error) {
+    log.debug({ error }, "onProcessExit failed");
+  }
+});
 
 /** The maximum size of a i16 */
 const MAX_SHORT_SIZE = 2 ** 15 - 1;
